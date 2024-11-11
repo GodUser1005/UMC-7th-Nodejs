@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import express from "express";        // -> ES Module
 import cors from "cors";
 
+import { userSignUpController } from "./controllers/user.controller.js";
+
 dotenv.config();  // .env 파일로 부터 환경변수를 읽고 이를 process.env 라는 객체를 통해 접근 허용
 
 const app = express()
@@ -16,6 +18,13 @@ app.use(express.urlencoded({extended: false})); // 단순 객체 문자열 형�
 app.get('/', (req, res) => {
   res.send("Hello World!");
 });
+
+app.post("/api/v1/users", userSignUpController);
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.json({message:err.message});
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
