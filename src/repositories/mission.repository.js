@@ -53,4 +53,44 @@ export const getMission = async (missionId) => {
     } finally {
         conn.release();
     }
+};
+
+export const tryMission = async (userId, missionId) => {
+    const conn = await pool.getConnection()
+            .catch(err => {
+                Promise.reject(err);
+            });
+
+    try {
+        await conn.beginTransaction(); // transaction 시작
+
+        const [confirm] = await conn.query(
+            `SELECT EXISTS(SELECT 1 FROM user_mission WHERE user_id = ? AND mission_id = ?) as isExistChallenge;`,
+            [userId, missionId]
+        );
+
+        if(confirm[0].isExistChallenge){
+            throw new Error("이미 도전중인 미션입니다.");
+        }
+
+        const [triedMission] = await conn.query(
+            "INSERT INTO user_mission (user_id, mission_id) VALUES (?,?);",
+            [ userId, missionId ]
+        ).then(async ([result]) => {
+            return await conn.query("SELECT mission_id FROM user_mission WHERE id = ?",result.insertId);
+        })
+
+        conn.commit();
+
+        console.log(triedMission);
+
+        return triedMission;
+
+    } catch (err) {
+        conn.rollback();
+        console.error(err);
+        throw err;
+    } finally {
+        conn.release();
+    }
 }

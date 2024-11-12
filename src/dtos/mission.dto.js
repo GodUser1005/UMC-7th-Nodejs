@@ -10,7 +10,7 @@ export const bodyToMission = (body, storeId) => {
     };
 };
 
-export const responseFromMission= (mission) => {
+export const responseFromMission = (mission) => {
     const {mission_id, point, contents, expiration_date, store_id} = mission;
     
     return {
@@ -23,4 +23,19 @@ export const responseFromMission= (mission) => {
         },
         message: "미션이 등록되었습니다.",
     }
-}
+};
+
+export const responseFromTriedMission = (mission) => {
+    const {mission_id, point, contents, expiration_date, store_id} = mission;
+    
+    return {
+        mission: {
+            id: mission_id,
+            store_id: store_id,
+            point: point,
+            contents: contents,
+            expiration_date: expiration_date,
+        },
+        message: "다음미션을 도전합니다.",
+    }
+};
