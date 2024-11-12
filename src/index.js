@@ -6,6 +6,7 @@ import cors from "cors";
 import { userSignUpController } from "./controllers/user.controller.js";
 import { addStoreController } from "./controllers/store.controller.js";
 import { addReviewController } from "./controllers/review.controller.js";
+import { addMissionController } from "./controllers/mission.controller.js";
 
 
 dotenv.config();  // .env 파일로 부터 환경변수를 읽고 이를 process.env 라는 객체를 통해 접근 허용
@@ -25,7 +26,7 @@ app.get('/', (req, res) => {
 app.post("/api/v1/users", userSignUpController);
 app.post("/api/v1/stores", addStoreController);
 app.post("/api/v1/stores/:storeId/reviews", addReviewController);
-//app.post("/api/v1/stores/:storeId/missions", addMissionController);
+app.post("/api/v1/stores/:storeId/missions", addMissionController);
 //app.post(".api/v1/users/:userId/missions/:missionId", tryMissionController);
 
 

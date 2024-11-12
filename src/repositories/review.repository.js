@@ -42,7 +42,7 @@ export const getReview = async (reviewId) => {
         );
 
         if(review.length == 0){
-            throw new Error("없는 리뷰입니다.")
+            throw new Error("없는 리뷰입니다.");
         }
 
         console.log(review);
