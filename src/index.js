@@ -25,8 +25,8 @@ app.get('/', (req, res) => {
 app.post("/api/v1/users", userSignUpController);
 app.post("/api/v1/stores", addStoreController);
 app.post("/api/v1/stores/:storeId/reviews", addReviewController);
-app.post("/api/v1/stores/:storeId/missions", addMissionController);
-app.post(".api/v1/users/:userId/missions/:missionId", tryMissionController);
+//app.post("/api/v1/stores/:storeId/missions", addMissionController);
+//app.post(".api/v1/users/:userId/missions/:missionId", tryMissionController);
 
 
 app.use((err, req, res, next) => {
