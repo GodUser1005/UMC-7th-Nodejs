@@ -9,8 +9,8 @@ export const bodyToUser = (body) => {
         birth: birth,
         address: address,
         food_categories: food_categories,
-    }
-}
+    };
+};
 
 export const responseFromUser = (user) => {
     const {id, name, e_mail, gender, birth, address, preferences} = user;
@@ -24,4 +24,4 @@ export const responseFromUser = (user) => {
         address: address,
         preferences: preferences,
     };
-}
+};
