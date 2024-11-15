@@ -41,3 +41,16 @@ export const responseFromTriedMission = (mission) => {
         message: "다음미션을 도전합니다.",
     }
 };
+
+export const responseFromMissionsOfStore = (missions) => {
+    for (let mission of missions){
+        mission.id = JSONStringify(mission.id);
+        mission.storeId = JSONStringify(mission.storeId);
+    } 
+    return {
+        data: missions,
+        pagination: {
+            cursor: missions.length ? missions[missions.length - 1].id : null,
+        },
+    }
+}

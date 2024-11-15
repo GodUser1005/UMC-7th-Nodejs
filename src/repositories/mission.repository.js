@@ -164,4 +164,30 @@ export const tryMissionPrisma = async (userId, missionId) => {
         console.error(err);
         throw err;
     }
-}
+};
+
+export const getMissionsFromStore = async (storeId, cursor) => {
+    try {
+        const missions = await prisma.mission.findMany({
+            select: {
+                id: true,
+                contents: true,
+                point: true,
+                storeId: true,
+                createdAt: true,
+                updatedAt: false,
+            },
+            where: {storeId: storeId, id: {gt: cursor}},
+            orderBy: {id: "asc"},
+            take: 5,
+        });
+        
+        if(missions.length == 0){
+            throw new Error("아무것도 없어요");
+        }
+
+        return missions
+    } catch (err) {
+        throw err;
+    }
+};

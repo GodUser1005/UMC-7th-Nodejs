@@ -8,7 +8,8 @@ import { addStoreController } from "./controllers/store.controller.js";
 import { addReviewController, getReviewsFromStoreController, getReviewsFromUserController } from "./controllers/review.controller.js";
 import {
   addMissionController,
-  tryMissionController
+  tryMissionController,
+  getMissionsFromStoreController
 } from "./controllers/mission.controller.js";
 
 
@@ -34,7 +35,7 @@ app.post("/api/v1/users/:userId/missions/:missionId", tryMissionController);
 
 app.get("/api/v1/stores/:storeId/reviews", getReviewsFromStoreController);
 app.get("/api/v1/users/:userId/reviews", getReviewsFromUserController);
-
+app.get("/api/v1/stores/:storeId/missions", getMissionsFromStoreController);
 
 app.use((err, req, res, next) => {
   console.log(err);

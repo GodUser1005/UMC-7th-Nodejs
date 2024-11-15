@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { addMissionService, tryMissionService } from "../services/mission.service.js";
+import { addMissionService, tryMissionService, getMissionsFromStoreService } from "../services/mission.service.js";
 import { bodyToMission } from "../dtos/mission.dto.js";
 
 export const addMissionController = async (req, res, next) => {
@@ -26,3 +26,16 @@ export const tryMissionController = async (req, res, next) => {
         throw err;
     }
 };
+
+export const getMissionsFromStoreController = async (req, res, next) => {
+    console.log("해당 식당의 미션들을 조회합니다!");
+
+    try {
+        const missions = await getMissionsFromStoreService(req.params.storeId, typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0);
+        res.status(StatusCodes.OK).json({result: missions});
+    } catch (err) {
+        throw err;
+    }   
+};
+
+
