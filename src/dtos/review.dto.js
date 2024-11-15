@@ -38,3 +38,17 @@ export const responseFromReviewsOfStore = (reviews) => {
         },
     }
 }
+
+export const responseFromReviewsOfUser = (reviews) => {
+    for (let review of reviews){
+        review.id = JSONStringify(review.id);
+        review.storeId = JSONStringify(review.storeId);
+        review.userId = JSONStringify(review.userId);
+    } 
+    return {
+        data: reviews,
+        pagination: {
+            cursor: reviews.length ? reviews[reviews.length - 1].id : null,
+        },
+    }
+}

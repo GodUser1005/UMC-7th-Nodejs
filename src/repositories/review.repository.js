@@ -1,5 +1,4 @@
 import { pool, prisma } from "../db.config.js";
-import { Prisma } from "@prisma/client";
 
 export const addReview = async (reviewData) => {
     const conn = await pool.getConnection()
@@ -69,6 +68,33 @@ export const getReviewsFromStore = async (storeId, cursor) => {
                 updatedAt: false,
             },
             where: {storeId: storeId, id: {gt: cursor}},
+            orderBy: {id: "asc"},
+            take: 5,
+        });
+        
+        if(reviews.length == 0){
+            throw new Error("아무것도 없어요");
+        }
+
+        return reviews
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getReviewsFromUser = async (userId, cursor) => {
+    try {
+        const reviews = await prisma.review.findMany({
+            select: {
+                id: true,
+                score: true,
+                content: true,
+                storeId: true,
+                userId: true,
+                createdAt: true,
+                updatedAt: false,
+            },
+            where: {userId: userId, id: {gt: cursor}},
             orderBy: {id: "asc"},
             take: 5,
         });
