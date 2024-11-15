@@ -191,3 +191,26 @@ export const getMissionsFromStore = async (storeId, cursor) => {
         throw err;
     }
 };
+
+export const getMissionsFromUser = async (userId, status, cursor) => {
+    try {
+        console.log(status)
+        const userMissions = await prisma.userMission.findMany({
+            select: {
+                id: true,
+                mission: true,
+            },
+            where: {userId: userId, id: {gt: cursor}, status : (status === 1 ? 1 : {gt : status})},
+            orderBy: {id: "asc"},
+            take: 5,
+        });
+        
+        if(userMissions.length == 0){
+            throw new Error("아무것도 없어요");
+        }
+
+        return userMissions
+    } catch (err) {
+        throw err;
+    }
+};

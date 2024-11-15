@@ -5,9 +5,15 @@ import {
     addMissionPrisma,
     getMissionPrisma,
     tryMissionPrisma,
-    getMissionsFromStore
+    getMissionsFromStore,
+    getMissionsFromUser
 } from "../repositories/mission.repository.js";
-import { responseFromMission, responseFromTriedMission, responseFromMissionsOfStore } from "../dtos/mission.dto.js";
+import { 
+    responseFromMission, 
+    responseFromTriedMission, 
+    responseFromMissionsOfStore,
+    responseFromMissionsOfUser 
+} from "../dtos/mission.dto.js";
 
 export const addMissionService = async (missionData) => {
 
@@ -37,6 +43,17 @@ export const getMissionsFromStoreService = async(storeId, cursor) => {
     try {
         const missions = await getMissionsFromStore(storeId, cursor);
         return responseFromMissionsOfStore(missions);
+
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getMissionsFromUserService = async(userId, status, cursor) => {
+    try {
+        console.log(status);
+        const missions = await getMissionsFromUser(userId, status ,cursor);
+        return responseFromMissionsOfUser(missions);
 
     } catch (err) {
         throw err;

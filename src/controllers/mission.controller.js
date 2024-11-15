@@ -1,5 +1,10 @@
 import { StatusCodes } from "http-status-codes";
-import { addMissionService, tryMissionService, getMissionsFromStoreService } from "../services/mission.service.js";
+import { 
+    addMissionService, 
+    tryMissionService, 
+    getMissionsFromStoreService,
+    getMissionsFromUserService 
+} from "../services/mission.service.js";
 import { bodyToMission } from "../dtos/mission.dto.js";
 
 export const addMissionController = async (req, res, next) => {
@@ -32,6 +37,25 @@ export const getMissionsFromStoreController = async (req, res, next) => {
 
     try {
         const missions = await getMissionsFromStoreService(req.params.storeId, typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0);
+        res.status(StatusCodes.OK).json({result: missions});
+    } catch (err) {
+        throw err;
+    }   
+};
+
+export const getMissionsFromUserController = async (req, res, next) => {
+    let status;
+    if(typeof req.query.status === "string" && req.query.status === "ongoing"){
+        console.log("유저의 진행중인 미션들을 조회합니다!");
+        status = 1;
+    }
+    else{
+        console.log("유저의 미션들을 조회합니다!");
+        status = 0;
+    }
+
+    try {
+        const missions = await getMissionsFromUserService(req.params.userId, status, typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0);
         res.status(StatusCodes.OK).json({result: missions});
     } catch (err) {
         throw err;

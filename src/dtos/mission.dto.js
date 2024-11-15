@@ -53,4 +53,18 @@ export const responseFromMissionsOfStore = (missions) => {
             cursor: missions.length ? missions[missions.length - 1].id : null,
         },
     }
+};
+
+export const responseFromMissionsOfUser = (missions) => {
+    for (let userMission of missions){
+        userMission.id = JSONStringify(userMission.id);
+        userMission.mission.id = JSONStringify(userMission.mission.id);
+        userMission.mission.storeId = JSONStringify(userMission.mission.storeId);
+    } 
+    return {
+        data: missions,
+        pagination: {
+            cursor: missions.length ? missions[missions.length - 1].id : null,
+        },
+    }
 }
