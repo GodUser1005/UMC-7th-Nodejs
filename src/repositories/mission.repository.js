@@ -1,4 +1,5 @@
 import { pool } from "../db.config.js";
+import { prisma } from "../db.config.js";
 
 export const addMission = async (missionData) => {
     const conn = await pool.getConnection()
@@ -23,6 +24,16 @@ export const addMission = async (missionData) => {
         throw err;
     } finally {
         conn.release();
+    }
+};
+
+export const addMissionPrisma = async (missionData) => {
+    try {
+        const created = await prisma.mission.create({data: missionData});
+        return created.id;
+    } catch (err) {
+        console.log(err);
+        throw err;
     }
 };
 
@@ -52,6 +63,30 @@ export const getMission = async (missionId) => {
         throw err;
     } finally {
         conn.release();
+    }
+};
+
+export const getMissionPrisma = async (missionId) => {
+    try {
+        const mission = await prisma.mission.findFirst({
+            select : {
+                id: true,
+                contents: true,
+                point:true,
+                expirationDate: true,
+                storeId: true
+            },
+            where : {id : missionId},
+        })
+
+        if(mission.length == 0){
+            throw new Error("없는 미션 입니다.");
+        }
+
+        return mission;
+        
+    } catch (err) {
+        throw err;
     }
 };
 
@@ -92,5 +127,41 @@ export const tryMission = async (userId, missionId) => {
         throw err;
     } finally {
         conn.release();
+    }
+}
+
+export const tryMissionPrisma = async (userId, missionId) => {
+    try {
+        const mission = await prisma.userMission.findFirst({
+            where : {missionId : missionId, userId: userId}
+        })
+
+        if(mission){
+            throw new Error("이미 도전중인 미션입니다.");
+        }
+
+        const triedMission = await prisma.userMission.create({
+            data : {
+                userId : userId,
+                missionId : missionId
+            }
+        }).then(async (result) => {
+            return await prisma.userMission.findFirst({
+                select : {
+                    mission: true,
+                },
+                where : {
+                    id : result.id,
+                    status : 1
+                }
+            })
+        })
+
+    
+        return triedMission.mission;
+
+    } catch (err) {
+        console.error(err);
+        throw err;
     }
 }

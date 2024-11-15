@@ -5,7 +5,7 @@ import cors from "cors";
 
 import { userSignUpController } from "./controllers/user.controller.js";
 import { addStoreController } from "./controllers/store.controller.js";
-import { addReviewController } from "./controllers/review.controller.js";
+import { addReviewController, getReviewsFromStoreController } from "./controllers/review.controller.js";
 import {
   addMissionController,
   tryMissionController
@@ -31,6 +31,8 @@ app.post("/api/v1/stores", addStoreController);
 app.post("/api/v1/stores/:storeId/reviews", addReviewController);
 app.post("/api/v1/stores/:storeId/missions", addMissionController);
 app.post("/api/v1/users/:userId/missions/:missionId", tryMissionController);
+
+app.get("/api/v1/stores/:storeId/reviews", getReviewsFromStoreController);
 
 
 app.use((err, req, res, next) => {

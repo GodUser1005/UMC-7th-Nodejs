@@ -1,20 +1,19 @@
-import { pool } from "../db.config.js";
+import { pool, prisma } from "../db.config.js";
+
 
 // User 데이터 삽입
 
 export const addUser = async(userData) => {
-
-        const conn = await pool.getConnection()
+    const conn = await pool.getConnection()
             .catch(err => {
                 Promise.reject(err);
             });
-
     try{
         await conn.beginTransaction(); // transaction 시작
 
         const [confirm] = await conn.query(
-            `SELECT EXISTS(SELECT 1 FROM users WHERE e_mail = ?) as isExistEmail;`,
-            userData.e_mail
+            `SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) as isExistEmail;`,
+            userData.email
         );
 
         if(confirm[0].isExistEmail){
@@ -22,18 +21,16 @@ export const addUser = async(userData) => {
         }
 
         const [result] = await conn.query(
-            `INSERT INTO users (name, e_mail, gender, birth, address) VALUES (?,?,?,?,?);`,
+            `INSERT INTO users (name, email, gender, birth, address) VALUES (?,?,?,?,?);`,
             [
                 userData.name,
-                userData.e_mail,
+                userData.email,
                 userData.gender,
                 userData.birth,
                 userData.address,
             ]
         );
-
         await conn.commit();
-
         return result.insertId;
     }
     catch (err){
@@ -42,6 +39,20 @@ export const addUser = async(userData) => {
     }
     finally{
         conn.release();
+    }
+}
+
+export const addUserPrisma = async(userData) => {
+    try{
+        const user = await prisma.user.findFirst({where: {email: userData.email}});
+        if(user){
+            throw new Error("이메일이 존재합니다");
+        }
+        const created = await prisma.user.create({data: userData});
+        return created.id;
+    }
+    catch (err){
+        throw err;
     }
 }
 
@@ -69,6 +80,16 @@ export const getUser = async (userId) => {
     }
 };
 
+export const getUserPrisma = async (userId) => {
+    try {
+        const user = await prisma.user.findFirstOrThrow({where: {id: userId}});
+        return user;
+
+    } catch (err) {
+        throw err;
+    }
+};
+
 export const setPreference = async (userId, foodCategoryId) => {
     const conn = await pool.getConnection()
             .catch(err => {
@@ -93,6 +114,19 @@ export const setPreference = async (userId, foodCategoryId) => {
     }
 }
 
+export const setPreferencePrisma = async (userId, foodCategoryId) => {
+    try{
+        await prisma.userFavorCategory.create({
+            data: {
+                userId: userId,
+                foodCategoryId: foodCategoryId,
+            },
+        });
+    }catch(err){
+        throw err;
+    }
+}
+
 export const getUserPreferenceByUserId = async(userId) => {
     const conn = await pool.getConnection()
             .catch(err => {
@@ -112,5 +146,23 @@ export const getUserPreferenceByUserId = async(userId) => {
         throw error;
     } finally{
         conn.release();
+    }
+}
+
+export const getUserPreferenceByUserIdPrisma = async(userId) => {
+    try {
+        const preferences = await prisma.userFavorCategory.findMany({
+            select: {
+                userId: true,
+                foodCategoryId: true,
+                foodCategory: true,
+            },
+            where: {userId: userId},
+            orderBy: { foodCategoryId: "asc" },
+        });
+
+        return preferences;
+    } catch (err) {
+        throw err;
     }
 }

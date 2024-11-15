@@ -19,7 +19,7 @@ export const tryMissionController = async (req, res, next) => {
     console.log("미션을 도전합니다.!");
 
     try {
-        const mission = await tryMissionService(req.params.userId, req.params.missionId);
+        const mission = await tryMissionService(parseInt(req.params.userId), parseInt(req.params.missionId));
         res.status(StatusCodes.OK).json({result: mission});
 
     } catch (err) {
