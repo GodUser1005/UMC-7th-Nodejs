@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
-import { pool } from "../db.config.js";
-=======
 import { pool, prisma } from "../db.config.js";
 import { DatabaseError, DataNotFound } from "../error.js";
->>>>>>> Stashed changes
 
 export const addReview = async (reviewData) => {
     const conn = await pool.getConnection()
@@ -59,9 +55,6 @@ export const getReview = async (reviewId) => {
     } finally {
         conn.release();
     }
-<<<<<<< Updated upstream
-}
-=======
 }
 
 export const getReviewsFromStore = async (storeId, cursor) => {
@@ -121,4 +114,3 @@ export const getReviewsFromUser = async (userId, cursor) => {
         throw err;
     }
 };
->>>>>>> Stashed changes

@@ -1,9 +1,6 @@
 import { pool } from "../db.config.js";
-<<<<<<< Updated upstream
-=======
 import { prisma } from "../db.config.js";
 import { DatabaseError, DataNotFound, DuplciateMissionChallenging } from "../error.js";
->>>>>>> Stashed changes
 
 export const addMission = async (missionData) => {
     const conn = await pool.getConnection()
@@ -31,8 +28,6 @@ export const addMission = async (missionData) => {
     }
 };
 
-<<<<<<< Updated upstream
-=======
 export const addMissionPrisma = async (missionData) => {
     try {
         const created = await prisma.mission.create({data: missionData});
@@ -42,7 +37,6 @@ export const addMissionPrisma = async (missionData) => {
     }
 };
 
->>>>>>> Stashed changes
 export const getMission = async (missionId) => {
     const conn = await pool.getConnection()
             .catch(err => {
@@ -72,8 +66,6 @@ export const getMission = async (missionId) => {
     }
 };
 
-<<<<<<< Updated upstream
-=======
 export const getMissionPrisma = async (missionId) => {
     try {
         const mission = await prisma.mission.findFirst({
@@ -97,7 +89,6 @@ export const getMissionPrisma = async (missionId) => {
     }
 };
 
->>>>>>> Stashed changes
 export const tryMission = async (userId, missionId) => {
     const conn = await pool.getConnection()
             .catch(err => {
@@ -136,9 +127,6 @@ export const tryMission = async (userId, missionId) => {
     } finally {
         conn.release();
     }
-<<<<<<< Updated upstream
-}
-=======
 }
 
 export const tryMissionPrisma = async (userId, missionId) => {
@@ -230,4 +218,3 @@ export const getMissionsFromUser = async (userId, status, cursor) => {
         throw err;
     }
 };
->>>>>>> Stashed changes

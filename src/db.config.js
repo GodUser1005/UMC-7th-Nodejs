@@ -1,9 +1,6 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
-<<<<<<< Updated upstream
-=======
 import { PrismaClient } from "@prisma/client";
->>>>>>> Stashed changes
 
 dotenv.config();
 
