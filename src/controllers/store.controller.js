@@ -8,7 +8,7 @@ export const addStoreController = async (req, res, next) => {
 
     try{
         const store = await addStoreService(bodyToStore(req.body));
-        res.status(StatusCodes.OK).json({result: store});
+        res.status(StatusCodes.OK).success(store);
 
     }catch(e){
         throw e;

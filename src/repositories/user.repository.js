@@ -1,4 +1,10 @@
+<<<<<<< Updated upstream
 import { pool } from "../db.config.js";
+=======
+import { pool, prisma } from "../db.config.js";
+import { DatabaseError, DataNotFound, DuplicateUserEmailError } from "../error.js";
+
+>>>>>>> Stashed changes
 
 // User 데이터 삽입
 
@@ -45,6 +51,23 @@ export const addUser = async(userData) => {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+export const addUserPrisma = async(userData) => {
+    try{
+        const user = await prisma.user.findFirst({where: {email: userData.email}});
+        if(user){
+            throw new DuplicateUserEmailError("이미 존재하는 이메일입니다.",userData);
+        }
+        const created = await prisma.user.create({data: userData});
+        return created.id;
+    }
+    catch (err){
+        throw err;
+    }
+}
+
+>>>>>>> Stashed changes
 export const getUser = async (userId) => {
     const conn = await pool.getConnection()
             .catch(err => {
@@ -69,6 +92,19 @@ export const getUser = async (userId) => {
     }
 };
 
+<<<<<<< Updated upstream
+=======
+export const getUserPrisma = async (userId) => {
+    try {
+        const user = await prisma.user.findFirstOrThrow({where: {id: userId}});
+        return user;
+
+    } catch (err) {
+        throw new DataNotFound("없는 유저입니다.",{user_id : userId});
+    }
+};
+
+>>>>>>> Stashed changes
 export const setPreference = async (userId, foodCategoryId) => {
     const conn = await pool.getConnection()
             .catch(err => {
@@ -93,6 +129,25 @@ export const setPreference = async (userId, foodCategoryId) => {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+export const setPreferencePrisma = async (userId, foodCategoryId) => {
+    try{
+        await prisma.userFavorCategory.create({
+            data: {
+                userId: userId,
+                foodCategoryId: foodCategoryId,
+            },
+        }).catch((err) => {
+            console.error(err);
+            throw new DatabaseError("DB 접근 오류입니다.");
+        });
+    }catch(err){
+        throw err;
+    }
+}
+
+>>>>>>> Stashed changes
 export const getUserPreferenceByUserId = async(userId) => {
     const conn = await pool.getConnection()
             .catch(err => {
@@ -113,4 +168,28 @@ export const getUserPreferenceByUserId = async(userId) => {
     } finally{
         conn.release();
     }
+<<<<<<< Updated upstream
+=======
+}
+
+export const getUserPreferenceByUserIdPrisma = async(userId) => {
+    try {
+        const preferences = await prisma.userFavorCategory.findMany({
+            select: {
+                userId: true,
+                foodCategoryId: true,
+                foodCategory: true,
+            },
+            where: {userId: userId},
+            orderBy: { foodCategoryId: "asc" },
+        }).catch((err) => {
+            console.error(err);
+            throw new DatabaseError("DB 접근 오류입니다.")
+        });
+
+        return preferences;
+    } catch (err) {
+        throw err;
+    }
+>>>>>>> Stashed changes
 }

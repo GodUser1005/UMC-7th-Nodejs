@@ -1,7 +1,13 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+<<<<<<< Updated upstream
+=======
+import { PrismaClient } from "@prisma/client";
+>>>>>>> Stashed changes
 
 dotenv.config();
+
+export const prisma = new PrismaClient({log: ["query"]});
 
 export const pool = mysql.createPool({
     host: process.env.DB_HOST || "localhost",

@@ -6,6 +6,7 @@ import {
     setPreference,
 } from "../repositories/user.repository.js";
 
+<<<<<<< Updated upstream
 export const userSignUpService = async (userData) => {
     
     try{
@@ -22,5 +23,22 @@ export const userSignUpService = async (userData) => {
     } catch(err){
         console.error(err.message);
         throw err;
+=======
+export const userSignUpService = async (userData, food_categories) => {
+
+    const joinUserId = await addUserPrisma(userData)
+        .catch((err) => {
+            err.data.food_categories = food_categories;
+            return Promise.reject(err);
+        })
+
+    for (const category_id of food_categories){
+        await setPreferencePrisma(joinUserId, category_id);
+>>>>>>> Stashed changes
     }
+
+    const user = await getUserPrisma(joinUserId);
+    user.preferences = await(getUserPreferenceByUserIdPrisma(joinUserId));
+    
+    return responseFromUserPrisma(user);
 }

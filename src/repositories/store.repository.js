@@ -1,4 +1,5 @@
 import { pool } from "../db.config.js";
+import { DatabaseError, DataNotFound } from "../error.js";
 
 export const addStore = async (storeData) => {
     const conn = await pool.getConnection()
@@ -15,12 +16,14 @@ export const addStore = async (storeData) => {
                 storeData.location_id,
                 storeData.category_id
             ]
-        );
+        ).catch((err) => {
+            console.error(err);
+            throw new DatabaseError("DB접근 오류 입니다.");
+        });
 
         return result.insertId;
 
     } catch (err) {
-        console.error(err);
         throw err        
     } finally{
         conn.release();
@@ -41,18 +44,18 @@ export const getStore = async (storeId) => {
             "JOIN food_categories ON stores.category_id = food_categories.id " +
             `WHERE stores.id = ?;`,
             storeId
-        );
+        ).catch((err) => {
+            console.error(err);
+            throw new DatabaseError("DB접근 오류입니다.")
+        });
 
         if(store.length == 0){
-            throw new Error("해당 가게가 없습니다.");
+            throw new DataNotFound("해당 가게가 없습니다.", store);
         }
-
-        console.log(store);
 
         return store;
 
     } catch (err) {
-        console.error(err);
         throw err;
     } finally{
         conn.release();

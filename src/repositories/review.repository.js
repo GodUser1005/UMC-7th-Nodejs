@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 import { pool } from "../db.config.js";
+=======
+import { pool, prisma } from "../db.config.js";
+import { DatabaseError, DataNotFound } from "../error.js";
+>>>>>>> Stashed changes
 
 export const addReview = async (reviewData) => {
     const conn = await pool.getConnection()
@@ -15,12 +20,13 @@ export const addReview = async (reviewData) => {
                 reviewData.score,
                 reviewData.content
             ]
-        );
+        ).catch((err) => {
+            throw new DatabaseError("DB접근 오류입니다.");
+        });
 
         return result.insertId;
 
     } catch (err) {
-        console.error(err);
         throw err;
     } finally{
         conn.release();
@@ -39,18 +45,80 @@ export const getReview = async (reviewId) => {
             "FROM reviews " +
             `WHERE reviews.id = ?;`,
             reviewId
-        );
+        ).catch((err) => {
+            throw new DatabaseError("DB 접근 오류입니다.");
+        });
 
         if(review.length == 0){
-            throw new Error("없는 리뷰입니다.");
+            throw new DataNotFound("리뷰가 없습니다.");
         }
 
-        console.log(review);
         return review;
     } catch (err) {
-        console.error(err);
         throw err;
     } finally {
         conn.release();
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+
+export const getReviewsFromStore = async (storeId, cursor) => {
+    try {
+        const reviews = await prisma.review.findMany({
+            select: {
+                id: true,
+                score: true,
+                content: true,
+                storeId: true,
+                userId: true,
+                createdAt: true,
+                updatedAt: false,
+            },
+            where: {storeId: storeId, id: {gt: cursor}},
+            orderBy: {id: "asc"},
+            take: 5,
+        }).catch((err) => {
+            throw new DatabaseError("DB접근 오류입니다.")
+        });
+        
+        if(reviews.length == 0){
+            throw new DataNotFound("리뷰가 없습니다.");
+        }
+
+        return reviews
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getReviewsFromUser = async (userId, cursor) => {
+    try {
+        const reviews = await prisma.review.findMany({
+            select: {
+                id: true,
+                score: true,
+                content: true,
+                storeId: true,
+                userId: true,
+                createdAt: true,
+                updatedAt: false,
+            },
+            where: {userId: userId, id: {gt: cursor}},
+            orderBy: {id: "asc"},
+            take: 5,
+        }).catch((err) => {
+            throw new DatabaseError("DB접근 오류입니다.");
+        });
+        
+        if(reviews.length == 0){
+            throw new DataNotFound("리뷰가 없습니다.");
+        }
+
+        return reviews
+    } catch (err) {
+        throw err;
+    }
+};
+>>>>>>> Stashed changes
