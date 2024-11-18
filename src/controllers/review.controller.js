@@ -13,9 +13,6 @@ export const addReviewController = async (req, res, next) => {
     }catch(e){
         throw e;
     }
-<<<<<<< Updated upstream
-};
-=======
 };
 
 export const getReviewsFromStoreController = async (req, res, next) => {
@@ -40,4 +37,3 @@ export const getReviewsFromUserController = async (req, res, next) => {
     }   
 };
 
->>>>>>> Stashed changes

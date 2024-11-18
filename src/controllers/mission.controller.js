@@ -19,20 +19,12 @@ export const tryMissionController = async (req, res, next) => {
     console.log("미션을 도전합니다.!");
 
     try {
-<<<<<<< Updated upstream
-        const mission = await tryMissionService(req.params.userId, req.params.missionId);
-        res.status(StatusCodes.OK).json({result: mission});
-=======
         const mission = await tryMissionService(parseInt(req.params.userId), parseInt(req.params.missionId));
         res.status(StatusCodes.CREATED).success(mission);
->>>>>>> Stashed changes
 
     } catch (err) {
         throw err;
     }
-<<<<<<< Updated upstream
-};
-=======
 };
 
 export const getMissionsFromStoreController = async (req, res, next) => {
@@ -66,4 +58,3 @@ export const getMissionsFromUserController = async (req, res, next) => {
 };
 
 
->>>>>>> Stashed changes
