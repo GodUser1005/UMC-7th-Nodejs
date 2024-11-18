@@ -5,10 +5,12 @@ import cors from "cors";
 
 import { userSignUpController } from "./controllers/user.controller.js";
 import { addStoreController } from "./controllers/store.controller.js";
-import { addReviewController } from "./controllers/review.controller.js";
+import { addReviewController, getReviewsFromStoreController, getReviewsFromUserController } from "./controllers/review.controller.js";
 import {
   addMissionController,
-  tryMissionController
+  tryMissionController,
+  getMissionsFromStoreController,
+  getMissionsFromUserController
 } from "./controllers/mission.controller.js";
 
 
@@ -49,6 +51,10 @@ app.post("/api/v1/stores/:storeId/reviews", addReviewController);
 app.post("/api/v1/stores/:storeId/missions", addMissionController);
 app.post("/api/v1/users/:userId/missions/:missionId", tryMissionController);
 
+app.get("/api/v1/stores/:storeId/reviews", getReviewsFromStoreController);
+app.get("/api/v1/users/:userId/reviews", getReviewsFromUserController);
+app.get("/api/v1/stores/:storeId/missions", getMissionsFromStoreController);
+app.get("/api/v1/users/:userId/missions",getMissionsFromUserController);
 
 // 전역 오류 처리를 위한 미들웨어
 app.use((err, req, res, next) => {

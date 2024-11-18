@@ -1,16 +1,17 @@
 export const bodyToUser = (body) => {
-    const {name, e_mail, gender, address, food_categories} = body;
+    const {name, email, gender, address} = body;
     const birth = new Date(body.birth);
 
     return {
         name: name,
-        e_mail: e_mail,
+        email: email,
         gender: gender,
         birth: birth,
         address: address,
-        food_categories: food_categories,
     };
 };
+
+
 
 export const responseFromUser = (user) => {
     const {id, name, e_mail, gender, birth, address, preferences} = user;
@@ -23,5 +24,20 @@ export const responseFromUser = (user) => {
         birth: birth,
         address: address,
         preferences: preferences,
+    };
+};
+
+export const responseFromUserPrisma = (user) => {
+    const {id, name, email, gender, birth, address, preferences} = user;
+    const preferFoods = preferences.map((preference) => preference.foodCategory.name);
+    
+    return {
+        id: id,
+        name: name,
+        e_mail: email,
+        gender: gender,
+        birth: new Date(birth),
+        address: address,
+        preferCategory: preferFoods,
     };
 };

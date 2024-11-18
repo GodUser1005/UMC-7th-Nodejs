@@ -1,8 +1,10 @@
 import {
     addReview,
-    getReview
+    getReview,
+    getReviewsFromStore,
+    getReviewsFromUser
 } from "../repositories/review.repository.js";
-import { responseFromReview } from "../dtos/review.dto.js";
+import { responseFromReview, responseFromReviewsOfStore, responseFromReviewsOfUser } from "../dtos/review.dto.js";
 
 export const addReviewService = async (reviewData) => {
 
@@ -16,4 +18,24 @@ export const addReviewService = async (reviewData) => {
         console.error(err);
         throw err;
     }
-}
+};
+
+export const getReviewsFromStoreService = async(storeId, cursor) => {
+    try {
+        const reviews = await getReviewsFromStore(storeId, cursor);
+        return responseFromReviewsOfStore(reviews);
+
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getReviewsFromUserService = async(userId, cursor) => {
+    try {
+        const reviews = await getReviewsFromUser(userId, cursor);
+        return responseFromReviewsOfUser(reviews);
+
+    } catch (err) {
+        throw err;
+    }
+};

@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { addReviewService } from "../services/review.service.js";
+import { addReviewService, getReviewsFromStoreService, getReviewsFromUserService } from "../services/review.service.js";
 import { bodyToReview } from "../dtos/review.dto.js";
 
 export const addReviewController = async (req, res, next) => {

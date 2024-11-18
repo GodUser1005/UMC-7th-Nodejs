@@ -6,18 +6,16 @@ import { DatabaseError, DataNotFound, DuplicateUserEmailError } from "../error.j
 // User 데이터 삽입
 
 export const addUser = async(userData) => {
-
-        const conn = await pool.getConnection()
+    const conn = await pool.getConnection()
             .catch(err => {
                 Promise.reject(err);
             });
-
     try{
         await conn.beginTransaction(); // transaction 시작
 
         const [confirm] = await conn.query(
-            `SELECT EXISTS(SELECT 1 FROM users WHERE e_mail = ?) as isExistEmail;`,
-            userData.e_mail
+            `SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) as isExistEmail;`,
+            userData.email
         );
 
         if(confirm[0].isExistEmail){
@@ -25,18 +23,16 @@ export const addUser = async(userData) => {
         }
 
         const [result] = await conn.query(
-            `INSERT INTO users (name, e_mail, gender, birth, address) VALUES (?,?,?,?,?);`,
+            `INSERT INTO users (name, email, gender, birth, address) VALUES (?,?,?,?,?);`,
             [
                 userData.name,
-                userData.e_mail,
+                userData.email,
                 userData.gender,
                 userData.birth,
                 userData.address,
             ]
         );
-
         await conn.commit();
-
         return result.insertId;
     }
     catch (err){
