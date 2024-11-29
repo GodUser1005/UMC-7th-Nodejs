@@ -18,7 +18,7 @@ export const addReviewService = async (reviewData) => {
         console.error(err);
         throw err;
     }
-};
+}
 
 export const getReviewsFromStoreService = async(storeId, cursor) => {
     try {
@@ -28,7 +28,7 @@ export const getReviewsFromStoreService = async(storeId, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}
 
 export const getReviewsFromUserService = async(userId, cursor) => {
     try {
@@ -38,4 +38,4 @@ export const getReviewsFromUserService = async(userId, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}

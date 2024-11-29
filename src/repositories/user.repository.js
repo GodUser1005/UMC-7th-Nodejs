@@ -80,7 +80,7 @@ export const getUser = async (userId) => {
     } finally{
         conn.release();
     }
-};
+}
 
 export const getUserPrisma = async (userId) => {
     try {
@@ -90,7 +90,7 @@ export const getUserPrisma = async (userId) => {
     } catch (err) {
         throw new DataNotFound("없는 유저입니다.",{user_id : userId});
     }
-};
+}
 
 export const setPreference = async (userId, foodCategoryId) => {
     const conn = await pool.getConnection()

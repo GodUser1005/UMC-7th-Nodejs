@@ -9,7 +9,7 @@ export const bodyToUser = (body) => {
         birth: birth,
         address: address,
     };
-};
+}
 
 
 
@@ -25,7 +25,7 @@ export const responseFromUser = (user) => {
         address: address,
         preferences: preferences,
     };
-};
+}
 
 export const responseFromUserPrisma = (user) => {
     const {id, name, email, gender, birth, address, preferences} = user;
@@ -40,4 +40,4 @@ export const responseFromUserPrisma = (user) => {
         address: address,
         preferCategory: preferFoods,
     };
-};
+}

@@ -27,7 +27,7 @@ export const addReview = async (reviewData) => {
     } finally{
         conn.release();
     }
-};
+}
 
 export const getReview = async (reviewId) => {
     const conn = await pool.getConnection()
@@ -84,7 +84,7 @@ export const getReviewsFromStore = async (storeId, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}
 
 export const getReviewsFromUser = async (userId, cursor) => {
     try {
@@ -113,4 +113,4 @@ export const getReviewsFromUser = async (userId, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}

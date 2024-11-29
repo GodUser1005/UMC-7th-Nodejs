@@ -18,7 +18,7 @@ export const addMissionController = async (req, res, next) => {
     }catch(e){
         throw e;
     }
-};
+}
 
 export const tryMissionController = async (req, res, next) => {
     console.log("미션을 도전합니다.!");
@@ -30,7 +30,7 @@ export const tryMissionController = async (req, res, next) => {
     } catch (err) {
         throw err;
     }
-};
+}
 
 export const getMissionsFromStoreController = async (req, res, next) => {
     console.log("해당 식당의 미션들을 조회합니다!");
@@ -41,7 +41,7 @@ export const getMissionsFromStoreController = async (req, res, next) => {
     } catch (err) {
         throw err;
     }   
-};
+}
 
 export const getMissionsFromUserController = async (req, res, next) => {
     let status;
@@ -60,6 +60,6 @@ export const getMissionsFromUserController = async (req, res, next) => {
     } catch (err) {
         throw err;
     }   
-};
+}
 
 

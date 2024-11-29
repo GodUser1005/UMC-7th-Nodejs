@@ -27,7 +27,7 @@ export const addMissionService = async (missionData) => {
         console.error(err);
         throw err;
     }
-};
+}
 
 export const tryMissionService = async (userId, missionId) => {
     try{
@@ -47,7 +47,7 @@ export const getMissionsFromStoreService = async(storeId, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}
 
 export const getMissionsFromUserService = async(userId, status, cursor) => {
     try {
@@ -58,4 +58,4 @@ export const getMissionsFromUserService = async(userId, status, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}

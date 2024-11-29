@@ -28,7 +28,7 @@ export const addStore = async (storeData) => {
     } finally{
         conn.release();
     }
-};
+}
 
 export const getStore = async (storeId) => {
     const conn = await pool.getConnection()

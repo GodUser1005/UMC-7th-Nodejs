@@ -9,7 +9,7 @@ export const bodyToReview = (body, storeId) => {
         score: score,
         content: content
     };
-};
+}
 
 export const responseFromReview = (review) => {
     const {review_id, score, content, created_at} = review;

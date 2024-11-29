@@ -10,7 +10,7 @@ export const bodyToMission = (body, storeId) => {
         point: point,
         expirationDate: expiration_date,
     };
-};
+}
 
 export const responseFromMission = (mission) => {
     const {id, point, contents, expirationDate, storeId} = mission;
@@ -25,7 +25,7 @@ export const responseFromMission = (mission) => {
         },
         message: "미션이 등록되었습니다.",
     }
-};
+}
 
 export const responseFromTriedMission = (mission) => {
     const {id, point, contents, expirationDate, storeId} = mission;
@@ -40,7 +40,7 @@ export const responseFromTriedMission = (mission) => {
         },
         message: "다음미션을 도전합니다.",
     }
-};
+}
 
 export const responseFromMissionsOfStore = (missions) => {
     for (let mission of missions){
@@ -53,7 +53,7 @@ export const responseFromMissionsOfStore = (missions) => {
             cursor: missions.length ? missions[missions.length - 1].id : null,
         },
     }
-};
+}
 
 export const responseFromMissionsOfUser = (missions) => {
     for (let userMission of missions){

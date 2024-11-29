@@ -6,7 +6,7 @@ export const bodyToStore = (body) => {
         location_id: location_id,
         category_id: category_id,
     };
-};
+}
 
 export const responseFromStore = (store) => {
     const {store_id, store_name, location_name, category_name} = store;

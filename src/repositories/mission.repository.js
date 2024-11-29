@@ -26,7 +26,7 @@ export const addMission = async (missionData) => {
     } finally {
         conn.release();
     }
-};
+}
 
 export const addMissionPrisma = async (missionData) => {
     try {
@@ -35,7 +35,7 @@ export const addMissionPrisma = async (missionData) => {
     } catch (err) {
         throw new DatabaseError("DB 접근 오류입니다.",missionData);
     }
-};
+}
 
 export const getMission = async (missionId) => {
     const conn = await pool.getConnection()
@@ -64,7 +64,7 @@ export const getMission = async (missionId) => {
     } finally {
         conn.release();
     }
-};
+}
 
 export const getMissionPrisma = async (missionId) => {
     try {
@@ -87,7 +87,7 @@ export const getMissionPrisma = async (missionId) => {
     } catch (err) {
         throw err;
     }
-};
+}
 
 export const tryMission = async (userId, missionId) => {
     const conn = await pool.getConnection()
@@ -164,7 +164,7 @@ export const tryMissionPrisma = async (userId, missionId) => {
     } catch (err) {
         throw err;
     }
-};
+}
 
 export const getMissionsFromStore = async (storeId, cursor) => {
     try {
@@ -192,7 +192,7 @@ export const getMissionsFromStore = async (storeId, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}
 
 export const getMissionsFromUser = async (userId, status, cursor) => {
     try {
@@ -217,4 +217,4 @@ export const getMissionsFromUser = async (userId, status, cursor) => {
     } catch (err) {
         throw err;
     }
-};
+}
