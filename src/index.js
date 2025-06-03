@@ -14,9 +14,15 @@ import {
   getMissionsFromStoreController,
   getMissionsFromUserController
 } from "./controllers/mission.controller.js";
+import session from "express-session";
+import passport from "./passport.js";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+import { prisma } from "./db.config.js";
+import { authRouter } from "./routes/auth.route.js";
 
 
 dotenv.config();  // .env 파일로 부터 환경변수를 읽고 이를 process.env 라는 객체를 통해 접근 허용
+
 
 const app = express()
 const port = process.env.PORT;
@@ -42,36 +48,25 @@ app.use(cors());  // cors 방식 허용?
 app.use(express.static('public'));  // 정적 파일 접근?
 app.use(express.json());  // request body를 json으로 해석할 수 있도록 함(JSON형태의 요청 body를 파싱)
 app.use(express.urlencoded({extended: false})); // 단순 객체 문자열 형태로 본문 데이터 해석
-
-app.get("/openapi.json", async(req,res,next) => {
-  // #swagger.ignore = true
-  const options = {
-    openapi: "3.0.0",
-    disableLogs: false,
-    writeOutputFile: false,
-  };
-  const outputFile = "dev/null";
-  const routes = ["./src/index.js", "./src/controllers/review.controller.js"];
-  const doc = {
-    info: {
-      title: "UMC 7th",
-      description: "UMC 7th Node.js 테스트 프로젝트.",
-    },
-    host: "localhost:3000",
-  };
-  const result = await swaggerAutogen(options)(outputFile, routes, doc);
-  res.json(result ? result.data : null);
-});
-
 app.use(
-  "/docs",
-  swaggerUiExpress.serve,
-  swaggerUiExpress.setup({}, {
-    swaggerOptions: {
-      url: "/openapi.json",
+  session({
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000, //ms
     },
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000,
+      dbRecordIdIsSessionId : true,
+      dbRecordIdFunction: undefined,
+    }),
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/oauth2",authRouter);
 
 app.get('/', (req, res) => {
   res.send("Hello World!");
@@ -169,6 +164,37 @@ app.get("/api/v1/stores/:storeId/reviews", getReviewsFromStoreController);
 app.get("/api/v1/users/:userId/reviews", getReviewsFromUserController);
 app.get("/api/v1/stores/:storeId/missions", getMissionsFromStoreController);
 app.get("/api/v1/users/:userId/missions",getMissionsFromUserController);
+
+
+app.use(
+  "/docs",
+  swaggerUiExpress.serve,
+  swaggerUiExpress.setup({}, {
+    swaggerOptions: {
+      url: "/openapi.json",
+    },
+  })
+);
+
+app.get("/openapi.json", async(req,res,next) => {
+  // #swagger.ignore = true
+  const options = {
+    openapi: "3.0.0",
+    disableLogs: false,
+    writeOutputFile: false,
+  };
+  const outputFile = "dev/null";
+  const routes = ["./src/index.js", "./src/controllers/review.controller.js"];
+  const doc = {
+    info: {
+      title: "UMC 7th",
+      description: "UMC 7th Node.js 테스트 프로젝트.",
+    },
+    host: "localhost:3000",
+  };
+  const result = await swaggerAutogen(options)(outputFile, routes, doc);
+  res.json(result ? result.data : null);
+});
 
 // 전역 오류 처리를 위한 미들웨어
 app.use((err, req, res, next) => {
